@@ -6,5 +6,6 @@ app_label = 'xlsxproducts'
 
 urlpatterns = [
     path('', XlsxProductListView.as_view(), name='list'),
+    path('<slug:slug>/', XlsxProductDetailView.as_view(), name='detail'),
 
 ]
