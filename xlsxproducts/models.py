@@ -17,7 +17,7 @@ class XlsxProduct(models.Model):
 
 
 class Screenshot(models.Model):
-    product = models.ForeignKey(XlsxProduct, related_name='screenshots', on_delete=models.CASCADE)
+    product = models.ForeignKey(XlsxProduct, related_name='xlsxproducts', on_delete=models.CASCADE)
     title = models.CharField(max_length=120, blank=True, null=True)
     image = models.ImageField(upload_to='xlsxproducts/screenshots/')
 
