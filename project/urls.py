@@ -18,5 +18,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('xslx/', include('xlsxproducts.urls') ),
+    path('xlsx/', include('xlsxproducts.urls') ),
 ]
