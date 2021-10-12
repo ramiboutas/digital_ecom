@@ -58,7 +58,7 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 
 # Database
-USE_SQLITE3_DB = True
+USE_SQLITE3_DB = str(os.environ.get('USE_SQLITE3_DB')) == "1"
 
 POSTGRES_DB = os.environ.get("POSTGRES_DB")
 POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
@@ -117,6 +117,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    ]
 
 # Default primary key field type
 
