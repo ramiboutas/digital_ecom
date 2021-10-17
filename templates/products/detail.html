@@ -16,7 +16,29 @@
       <h1>Place product details</h1>
       <h2> {{ object.title }} </h2>
       <p> {{ object.description }} </p>
-      <a href="#">Buy product</a>
+    <form action="{{ object.buy_product_url }}" method="post">
+      {% csrf_token %}
+      <button type="submit" id="checkout-button">Checkout</button>
+    </form>
+
+
+    <button type="button" id="checkout-button">Checkout</button>
+
+
+    <form id="payment-form">
+      <input type="text" id="email" placeholder="Email address" />
+      <div id="card-element"><!--Stripe.js injects the Card Element--></div>
+      <button id="submit">
+        <div class="spinner hidden" id="spinner"></div>
+        <span id="button-text">Pay</span>
+      </button>
+      <p id="card-error" role="alert"></p>
+      <p class="result-message hidden">
+        Payment succeeded, see the result in your
+        <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.
+      </p>
+    </form>
+
     </div>
   </div>
 </div>

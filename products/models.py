@@ -1,7 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
-
-
+from django.urls import reverse
 
 class Product(models.Model):
     title = models.CharField(max_length=255, unique=True)
@@ -19,6 +18,13 @@ class Product(models.Model):
 
     def get_display_price(self):
         return "{0:.2f}".format(self.price / 100)
+
+    def buy_product_url(self):
+        return reverse('payments:create-product-checkout-session', kwargs={'slug' : self.slug})
+
+    def create_payment_intent_url(self):
+        return reverse('payments:create-product-checkout-session', kwargs={'slug' : self.slug})
+
 
 class ProductFile(models.Model):
     product = models.ForeignKey(Product, related_name='files', on_delete=models.CASCADE)
