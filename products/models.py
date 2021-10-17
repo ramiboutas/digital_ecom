@@ -17,10 +17,15 @@ class Product(models.Model):
     def __str__(self):
         return f'{self.title}'
 
+    def get_display_price(self):
+        return "{0:.2f}".format(self.price / 100)
+
 class ProductFile(models.Model):
     product = models.ForeignKey(Product, related_name='files', on_delete=models.CASCADE)
     file = models.FileField()
 
+    def get_absolute_url(self):
+        pass
 
 
 class Screenshot(models.Model):

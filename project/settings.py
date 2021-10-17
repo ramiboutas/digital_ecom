@@ -22,6 +22,7 @@ INSTALLED_APPS = [
 
     # own apps
     'products',
+    'payments',
 
     #third-party apps
 ]

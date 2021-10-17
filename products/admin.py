@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import Product, Screenshot, ProductFile
 
-
 class ScreenshotInline(admin.StackedInline):
     model = Screenshot
     extra = 1
