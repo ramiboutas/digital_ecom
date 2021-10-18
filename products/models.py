@@ -20,10 +20,10 @@ class Product(models.Model):
         return "{0:.2f}".format(self.price / 100)
 
     def buy_product_url(self):
-        return reverse('payments:create-product-checkout-session', kwargs={'slug' : self.slug})
+        return reverse('carts:create-product-checkout-session', kwargs={'slug' : self.slug})
 
     def create_payment_intent_url(self):
-        return reverse('payments:create-product-checkout-session', kwargs={'slug' : self.slug})
+        return reverse('carts:create-product-checkout-session', kwargs={'slug' : self.slug})
 
 
 class ProductFile(models.Model):

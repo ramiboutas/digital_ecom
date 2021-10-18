@@ -8,12 +8,10 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
-
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class CreateProductCheckoutSessionView(View):
-
     def post(self, request, slug, *args, **kwargs):
         try:
             product = Product.objects.get(slug=slug)
@@ -29,6 +27,9 @@ class CreateProductCheckoutSessionView(View):
                   'card',
                   'sofort',
                 ],
+                metadata = {
+                    'slug': slug
+                },
                 mode='payment',
                 success_url = request.get_host() + reverse('carts:success'),
                 cancel_url = request.get_host() + reverse('carts:cancel'),
@@ -44,9 +45,6 @@ class ProductSuccessView(TemplateView):
 
 class ProductCancelView(TemplateView):
     template_name = 'carts/cancel.html'
-
-
-
 
 @csrf_exempt
 def stripe_webhook(request):
