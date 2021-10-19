@@ -2,7 +2,9 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 
+
 class Category(models.Model):
+    # products = models.ManyToManyField('Product', related_name='categories')
     title = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True, help_text='Unique value for product page URL, created from name.')
     description = models.TextField()
@@ -12,22 +14,34 @@ class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['title']
+        verbose_name_plural = 'Categories'
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Category, self).save(*args, **kwargs)
+
     # general model functions
     def __str__(self):
         return f'{self.title}'
 
     # url related functions
     def get_absolute_url(self):
-        return reverse('products:category_list', kwargs={'slug' : self.slug})
+        return reverse('products:category_detail', kwargs={'slug' : self.slug})
 
 
 class Product(models.Model):
     categories = models.ManyToManyField(Category, related_name='products')
     title = models.CharField(max_length=255, unique=True)
-    old_price = models.IntegerField(default=0)
-    price = models.IntegerField(default=0)
     description = models.TextField()
+    old_price = models.IntegerField(default=0)
+    price = models.IntegerField(default=500)
+    is_free = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    is_bestseller = models.BooleanField(default=False, help_text="Bestselling products somewhere prominent, like in a side column on every page")
+    is_featured = models.BooleanField(default=False, help_text="Which products to show up to the user to present to your user as soon as they arrive at your site")
+    featured_as = models.CharField(max_length=10, blank=True, null=True)
     meta_keywords = models.CharField("Meta Keywords",max_length=255, help_text='Comma-delimited set of SEO keywords for meta tag')
     meta_description = models.CharField("Meta Description", max_length=255, help_text='Content for description meta tag')
     slug = models.SlugField(null=True, blank=True)

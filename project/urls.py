@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('products/', include('products.urls')),
     path('cart/', include(('carts.urls', 'carts'))),
-    path("stripe/", include("djstripe.urls", namespace="djstripe")),
+    # path("stripe/", include("djstripe.urls", namespace="djstripe")),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
