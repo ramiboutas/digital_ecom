@@ -51,6 +51,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'utils.context_processors.ecomstore',
             ],
         },
     },
@@ -119,11 +120,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    ]
+STATICFILES_DIRS = [str(BASE_DIR.joinpath("static_dev")),] # for development
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+# Media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
@@ -144,3 +144,10 @@ STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
 # STRIPE_LIVE_MODE = False  # Change to True in production
 # DJSTRIPE_WEBHOOK_SECRET = "whsec_xxx"  # Get it from the section in the Stripe dashboard where you added the webhook endpoint
 # DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+
+
+# SEO stuff
+
+SITE_NAME = 'Modern Musician'
+META_KEYWORDS = 'Music, instruments, music accessories, musician supplies'
+META_DESCRIPTION = 'Modern Musician is an online supplier of instruments, sheet music, and other accessories for musicians'
