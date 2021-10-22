@@ -29,25 +29,19 @@ def get_cart_items(cart_id):
 
 def add_to_cart(request, id):
     try:
-        card_id = request.COOKIES['cart_id']
+        card_id = request.COOKIES['cart_id'] # get the cookie cart_id from the request object
     except KeyError:
-        card_id = _generate_cart_id()
-
+        card_id = _generate_cart_id() # generate one if it does not exist
     added_product = get_object_or_404(Product, id=id)
     cart_products = get_cart_items(card_id)
     response = HttpResponse(f'You added this product: {added_product.title}')
-    # firstly we supose that the product has not been added to the cart yet
-    product_in_cart = False
-    # then we check if it was already added
+    product_in_cart = False # firstly we supose that the product has not been added to the cart yet
     for cart_item in cart_products:
-        if cart_item.product.id == added_product.id:
+        if cart_item.product.id == added_product.id: # then we check if it was already added
             product_in_cart = True
             response = HttpResponse(f'The product {added_product.title} has been already added to the cart')
     if not product_in_cart:
         Item(product = added_product, cart_id = card_id).save()
-        # item.product = added_product
-        # item.cart_id = card_id
-        # item.save()
     response.set_cookie('cart_id', card_id)
     return response
 
@@ -59,17 +53,6 @@ def show_cart(request):
 
 
 
-    # p = get_object_or_404(Product, slug=product_slug)
-    # cart_products = get_cart_items(request)
-    # product_in_cart = False
-    # for cart_item in cart_products:
-    #     if cart_item.product.id == p.id:
-    #         product_in_cart = True
-    # if not product_in_cart:
-    #     item = Item()
-    #     item.product = p
-    #     item.cart_id = _cart_id(request)
-    #     item.save()
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
