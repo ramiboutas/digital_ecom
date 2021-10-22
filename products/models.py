@@ -36,7 +36,7 @@ class Product(models.Model):
     title = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     old_price = models.IntegerField(default=0)
-    price = models.IntegerField(default=500)
+    price = models.PositiveIntegerField(default=500)
     is_free = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_bestseller = models.BooleanField(default=False, help_text="Bestselling products somewhere prominent, like in a side column on every page")
@@ -47,6 +47,7 @@ class Product(models.Model):
     slug = models.SlugField(null=True, blank=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    file = models.FileField()
 
     # general model functions
     def __str__(self):
@@ -68,18 +69,13 @@ class Product(models.Model):
         return "{0:.2f}".format(self.price / 100)
 
     def buy_product_url(self):
-        return reverse('carts:create-product-checkout-session', kwargs={'slug' : self.slug})
+        return reverse('cart:create-product-checkout-session', kwargs={'slug' : self.slug})
+
+    def add_to_cart_url(self):
+        return reverse('cart:add-to-cart', kwargs={'id' : self.id})
 
     def create_payment_intent_url(self):
-        return reverse('carts:create-product-checkout-session', kwargs={'slug' : self.slug})
-
-
-class ProductFile(models.Model):
-    product = models.ForeignKey(Product, related_name='files', on_delete=models.CASCADE)
-    file = models.FileField()
-
-    def get_absolute_url(self):
-        return reverse('products:download_file', kwargs={'id' : self.id})
+        return reverse('cart:create-product-checkout-session', kwargs={'slug' : self.slug})
 
 
 class Screenshot(models.Model):

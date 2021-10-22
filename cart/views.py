@@ -1,15 +1,78 @@
 import stripe
 import json
+import random
+import decimal
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import View
-from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
+
+from .models import Item
+from products.models import Product
+
+# helper function to generate a card_id (use it just in this module!)
+def _generate_cart_id():
+    cart_id = ''
+    characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()'
+    cart_id_length = 50
+    for y in range(cart_id_length):
+        cart_id +=characters[random.randint(0, len(characters)-1)]
+    return cart_id
+
+# helper function to get item associated with a card_id
+def get_cart_items(cart_id):
+    return Item.objects.filter(cart_id=cart_id)
+
+
+def add_to_cart(request, id):
+    try:
+        card_id = request.COOKIES['cart_id']
+    except KeyError:
+        card_id = _generate_cart_id()
+
+    added_product = get_object_or_404(Product, id=id)
+    cart_products = get_cart_items(card_id)
+    response = HttpResponse(f'You added this product: {added_product.title}')
+    # firstly we supose that the product has not been added to the cart yet
+    product_in_cart = False
+    # then we check if it was already added
+    for cart_item in cart_products:
+        if cart_item.product.id == added_product.id:
+            product_in_cart = True
+            response = HttpResponse(f'The product {added_product.title} has been already added to the cart')
+    if not product_in_cart:
+        Item(product = added_product, cart_id = card_id).save()
+        # item.product = added_product
+        # item.cart_id = card_id
+        # item.save()
+    response.set_cookie('cart_id', card_id)
+    return response
+
+
+
+def show_cart(request):
+    context = {}
+    return render(request, 'cart/cart.html', context)
+
+
+
+    # p = get_object_or_404(Product, slug=product_slug)
+    # cart_products = get_cart_items(request)
+    # product_in_cart = False
+    # for cart_item in cart_products:
+    #     if cart_item.product.id == p.id:
+    #         product_in_cart = True
+    # if not product_in_cart:
+    #     item = Item()
+    #     item.product = p
+    #     item.cart_id = _cart_id(request)
+    #     item.save()
+
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
-
 
 class CreateProductCheckoutSessionView(View):
     def post(self, request, slug, *args, **kwargs):
@@ -31,8 +94,8 @@ class CreateProductCheckoutSessionView(View):
                     'slug': slug
                 },
                 mode='payment',
-                success_url = request.get_host() + reverse('carts:success'),
-                cancel_url = request.get_host() + reverse('carts:cancel'),
+                success_url = request.get_host() + reverse('cart:success'),
+                cancel_url = request.get_host() + reverse('cart:cancel'),
             )
         except Exception as e:
             return str(e)
@@ -40,11 +103,11 @@ class CreateProductCheckoutSessionView(View):
 
 
 class ProductSuccessView(TemplateView):
-    template_name = 'carts/sucess.html'
+    template_name = 'cart/sucess.html'
 
 
 class ProductCancelView(TemplateView):
-    template_name = 'carts/cancel.html'
+    template_name = 'cart/cancel.html'
 
 @csrf_exempt
 def stripe_webhook(request):

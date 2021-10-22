@@ -2,8 +2,15 @@
 
 {% block content %}
 
-<section id="xlsx-product">
+
+
+<section>
   <div class="container">
+    <div class="row">
+      <div id="server-message" class="col-12">
+
+      </div>
+    </div>
   <div class="row">
     <div class="col-lg-6 border">
       <h1>Place screenshots!</h1>
@@ -16,10 +23,9 @@
       <h1>Place product details</h1>
       <h2> {{ object.title }} </h2>
       <p> {{ object.description }} </p>
-    <form action="{{ object.buy_product_url }}" method="post">
-      {% csrf_token %}
-      <button type="submit" id="checkout-button">Checkout</button>
-    </form>
+
+      <button hx-post="{{ object.add_to_cart_url }}" hx-target="#server-message"
+       hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' type="submit" name="button">Add to cart</button>
 
     </div>
   </div>

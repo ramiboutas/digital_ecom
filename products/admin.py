@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Screenshot, ProductFile, Category
+from .models import Product, Screenshot, Category
 
 class CategoryAdmin(admin.ModelAdmin):
     model = Category
@@ -10,13 +10,9 @@ class ScreenshotInline(admin.StackedInline):
     model = Screenshot
     extra = 1
 
-class FileInline(admin.StackedInline):
-    model = ProductFile
-    extra = 1
-
 class ProductAdmin(admin.ModelAdmin):
     model = Product
-    inlines = [ScreenshotInline, FileInline]
+    inlines = [ScreenshotInline]
     readonly_fields=['slug',]
     search_fields = ['title', 'description', 'meta_keywords', 'meta_description']
     exclude = ('created_at', 'updated_at',)

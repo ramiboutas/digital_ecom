@@ -22,7 +22,7 @@ INSTALLED_APPS = [
 
     # own apps
     'products',
-    'carts',
+    'cart.apps.CartConfig',
 
     #third-party apps
     # 'djstripe',
@@ -151,3 +151,23 @@ STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
 SITE_NAME = 'Modern Musician'
 META_KEYWORDS = 'Music, instruments, music accessories, musician supplies'
 META_DESCRIPTION = 'Modern Musician is an online supplier of instruments, sheet music, and other accessories for musicians'
+
+
+
+# Cookies age
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30 # 30 days
+
+# Cookies explanation & sessions
+
+# You can write a test cookie to the user’s browser, which you can then check for to make sure it exists,
+# and delete it when you’re done using it.
+
+# To write this dummy test cookie, we use the following line of code:
+# request.session.set_test_cookie()
+
+# Then, when you need to check for that cookie’s existence in your code, you use the following
+# function, which will check for the cookie and return True if it finds it:
+# request.session.test_cookie_worked()
+
+# Lastly, you can destroy this dummy cookie with:
+# request.session.delete_test_cookie()
