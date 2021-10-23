@@ -72,7 +72,7 @@ class Product(models.Model):
         return reverse('cart:create-product-checkout-session', kwargs={'slug' : self.slug})
 
     def add_to_cart_url(self):
-        return reverse('cart:add-to-cart', kwargs={'id' : self.id})
+        return reverse('cart:add-to-cart', kwargs={'product_id' : self.id})
 
     def create_payment_intent_url(self):
         return reverse('cart:create-product-checkout-session', kwargs={'slug' : self.slug})

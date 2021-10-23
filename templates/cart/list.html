@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  <h1>Cart Page</h1>
+  <ul>
+    {% for item in object_list %}
+      <li> {{ item.title }} price: {{ item.price }} <button hx-delete="{{ item.remove_from_cart_url }}" type="submit" name="button">Remove</button> </li>
+    {% empty %}
+    <li> No items found in this cart</li>
+    {% endfor %}
+  </ul>
+
+
+{% endblock %}

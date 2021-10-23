@@ -21,8 +21,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # own apps
-    'products',
+    'products.apps.ProductsConfig',
     'cart.apps.CartConfig',
+    'payment.apps.PaymentConfig',
 
     #third-party apps
     # 'djstripe',

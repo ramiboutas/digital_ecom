@@ -1,21 +1,11 @@
 from django.urls import path, include
-from .views import (CreateProductCheckoutSessionView,
-                    ProductSuccessView,
-                    ProductCancelView,
-                    StripePaymentProductIntentView,
-                    stripe_webhook,
-                    show_cart,
-                    add_to_cart)
-
+from .views import add_to_cart_view, show_cart_view, remove_from_cart_view
 
 app_label = 'cart'
 
 urlpatterns = [
-    path('', show_cart, name='cart'),
-    path('add/<int:id>/', add_to_cart, name='add-to-cart'),
-    path('create-product-checkout-session/<slug:slug>/', CreateProductCheckoutSessionView.as_view(), name='create-product-checkout-session'),
-    path('create-product-payment-intent/<slug:slug>/', StripePaymentProductIntentView.as_view(), name='create-product-payment-intent'),
-    path('webhooks/stripe/', stripe_webhook, name='stripe-webhook'),
-    path('sucess/', ProductSuccessView.as_view(), name='sucess'),
-    path('cancel/', ProductCancelView.as_view(), name='cancel'),
+    path('add/<int:product_id>/', add_to_cart_view, name='add-to-cart'),
+    path('remove/<int:item_id>/', remove_from_cart_view, name='remove-from-cart'),
 ]
+
+path('', show_cart_view, name='show-cart'),

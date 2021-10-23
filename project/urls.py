@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('products/', include('products.urls')),
     path('cart/', include(('cart.urls', 'cart'))),
+    path('payment/', include(('payment.urls', 'payment'))),
     # path("stripe/", include("djstripe.urls", namespace="djstripe")),
 ]
 
