@@ -6,6 +6,5 @@ app_label = 'cart'
 urlpatterns = [
     path('add/<int:product_id>/', add_to_cart_view, name='add-to-cart'),
     path('remove/<int:item_id>/', remove_from_cart_view, name='remove-from-cart'),
+    path('', show_cart_view, name='show-cart'),
 ]
-
-path('', show_cart_view, name='show-cart'),

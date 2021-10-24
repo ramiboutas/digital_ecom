@@ -3,7 +3,6 @@ from .models import Product, Screenshot, Category
 
 class CategoryAdmin(admin.ModelAdmin):
     model = Category
-    # inlines =
     readonly_fields = ['slug',]
 
 class ScreenshotInline(admin.StackedInline):

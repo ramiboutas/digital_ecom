@@ -7,4 +7,4 @@ User = get_user_model()
 
 class Order(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, related_name='orders', on_delete=models.CASCADE)
-    cart = models.OneToOneField(Cart, )
+    cart = models.OneToOneField(Cart, on_delete=models.CASCADE)
