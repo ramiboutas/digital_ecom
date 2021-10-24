@@ -6,7 +6,6 @@ from django.shortcuts import get_object_or_404
 
 from products.models import Product
 
-
 def generate_cookie_value():
     cookie_value = ''
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()'
@@ -17,7 +16,6 @@ def generate_cookie_value():
 
 
 class Cart(models.Model):
-    # cookie = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     cookie_value = models.CharField(default=generate_cookie_value(), max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
