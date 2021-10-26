@@ -54,6 +54,14 @@ class Item(models.Model):
 # helper function  get or  create a cart
 def get_or_create_cart(request):
     try:
+        # sessionid = request.session['sessionid']
+        sessionid = request.session.session_key
+        print(f"sessionid exists: {sessionid}")
+    except KeyError:
+        sessionid = request.session.save()
+        print(f"sessionid created: {sessionid}")
+
+    try:
         cart_cookie_value = request.COOKIES['cart_id'] # get the cookie from the request object
     except KeyError:
         # if it does not exist, create new one

@@ -9,6 +9,12 @@ from .models import Item, Cart, get_or_create_cart
 
 
 def add_to_cart_view(request, product_id):
+    try:
+        session_cart = request.session.get('session_cart', {})
+    except KeyError:
+        session_cart = request.session.set('session_cart', {})
+
+    # request.session['session_cart'].append(product_id)
     cart = get_or_create_cart(request)
     cart_items = cart.get_cart_items()
     added_product = get_object_or_404(Product, id=product_id)
