@@ -3,6 +3,11 @@ from django.template.defaultfilters import slugify
 from django.urls import reverse
 
 
+class ProductManager(models.Manager):
+    def get_queryset(self):
+        return super(ProductManager, self).get_queryset().filter(is_active=True)
+
+
 class Category(models.Model):
     # products = models.ManyToManyField('Product', related_name='categories')
     title = models.CharField(max_length=50)
@@ -31,6 +36,7 @@ class Category(models.Model):
         return reverse('products:category_detail', kwargs={'slug' : self.slug})
 
 
+
 class Product(models.Model):
     categories = models.ManyToManyField(Category, related_name='products')
     title = models.CharField(max_length=255, unique=True)
@@ -48,6 +54,12 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     file = models.FileField()
+
+    objects = models.Manager()
+    products = ProductManager()
+    # excels = ExcelManager()
+    # words = WordManager()
+    # so on
 
     # general model functions
     def __str__(self):
